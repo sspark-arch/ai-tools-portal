@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Tools for Artists - 아티스트를 위한 AI 도구 포털</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+                        <rect width="32" height="32" rx="8" fill="#6366f1"/>
+                        <path d="M16 8V24M8 16H24" stroke="white" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                    <span>ArtistAI</span>
+                </div>
+                <nav class="nav">
+                    <button class="nav-btn active" data-category="all">전체</button>
+                    <button class="nav-btn" data-category="audio">음악/오디오</button>
+                    <button class="nav-btn" data-category="visual">이미지/비디오</button>
+                    <button class="nav-btn" data-category="text">텍스트/작성</button>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h1>아티스트를 위한 AI 도구 가이드</h1>
+            <p>너무 많은 AI 모델 중에서 당신의 작업에 최적인 도구를 찾아보세요</p>
+
+            <!-- Search & Filter -->
+            <div class="search-filter">
+                <input type="text" id="searchInput" class="search-input" placeholder="도구 검색...">
+                <div class="filter-group">
+                    <label class="filter-label">
+                        <input type="checkbox" id="freeFilter" value="free">
+                        <span>무료 도구만</span>
+                    </label>
+                    <label class="filter-label">
+                        <input type="checkbox" id="paidFilter" value="paid">
+                        <span>유료 도구</span>
+                    </label>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tools Grid -->
+    <section class="tools-section">
+        <div class="container">
+            <div class="tools-grid" id="toolsGrid">
+                <!-- 도구 카드가 JavaScript로 동적으로 생성됨 -->
+            </div>
+            <div id="noResults" class="no-results" style="display: none;">
+                <p>검색 결과가 없습니다.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Compare Modal -->
+    <div class="compare-modal" id="compareModal">
+        <div class="compare-content">
+            <button class="close-btn" id="closeCompare">&times;</button>
+            <h2>도구 비교</h2>
+            <div class="compare-table" id="compareTable"></div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 ArtistAI - 아티스트를 위한 AI 도구 포털</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
