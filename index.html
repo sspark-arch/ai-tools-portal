@@ -5,6 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI Tools for Artists - 아티스트를 위한 AI 도구 포털</title>
     <link rel="stylesheet" href="styles.css">
+    <!-- TensorFlow.js -->
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4"></script>
+    <!-- Universal Sentence Encoder Lite -->
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/universal-sentence-encoder@1"></script>
 </head>
 <body>
     <!-- Header -->
@@ -39,7 +43,7 @@
 
             <!-- Search & Filter -->
             <div class="search-filter">
-                <input type="text" id="searchInput" class="search-input" placeholder="도구 검색...">
+                <input type="text" id="searchInput" class="search-input" placeholder="예: 패션 AI 이미지 생성, 영상 편집 등...">
                 <div class="filter-group">
                     <label class="filter-label">
                         <input type="checkbox" id="freeFilter" value="free">
@@ -49,6 +53,18 @@
                         <input type="checkbox" id="paidFilter" value="paid">
                         <span>유료 도구</span>
                     </label>
+                </div>
+            </div>
+
+            <!-- AI Search Status -->
+            <div id="searchStatus" class="search-status">
+                <div id="loadingIndicator" style="display: none;">
+                    <span class="spinner"></span>
+                    <span>AI가 의미를 분석하는 중...</span>
+                </div>
+                <div id="aiRecommendation" style="display: none;" class="ai-recommendation">
+                    <span class="ai-icon">✨</span>
+                    <span id="recommendationText"></span>
                 </div>
             </div>
         </div>

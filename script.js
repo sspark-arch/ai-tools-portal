@@ -10,7 +10,9 @@ const tools = [
         price: "유료",
         rating: 4.9,
         tags: ["이미지생성", "4K", "고품질", "텍스트렌더링", "상세한"],
-        features: ["4K 해상도", "텍스트 정확도", "복잡한 구성"]
+        features: ["4K 해상도", "텍스트 정확도", "복잡한 구성"],
+        intent: ["이미지 생성", "고품질 비주얼", "디자인", "포스터"],
+        useCases: ["광고 배너 만들기", "제품 사진 생성", "포스터 디자인", "프레젠테이션 이미지"]
     },
     {
         id: 2,
@@ -21,7 +23,9 @@ const tools = [
         price: "유료",
         rating: 4.9,
         tags: ["이미지생성", "패션", "미학", "사실적", "의류"],
-        features: ["현실적인 텍스처", "패션 특화", "라이프스타일"]
+        features: ["현실적인 텍스처", "패션 특화", "라이프스타일"],
+        intent: ["패션 이미지", "뷰티 콘텐츠", "라이프스타일", "의류"],
+        useCases: ["패션 의류 이미지", "뷰티 제품 사진", "라이프스타일 콘텐츠", "소셜미디어 포스트"]
     },
     {
         id: 3,
@@ -32,7 +36,9 @@ const tools = [
         price: "유료",
         rating: 4.8,
         tags: ["이미지생성", "4K", "텍스트", "GPT", "상세함"],
-        features: ["텍스트 렌더링", "4K 품질", "빠른 생성"]
+        features: ["텍스트 렌더링", "4K 품질", "빠른 생성"],
+        intent: ["이미지 생성", "텍스트 포함", "고해상도"],
+        useCases: ["포스터 텍스트 포함", "배너 이미지", "책 표지 디자인"]
     },
     {
         id: 4,
@@ -43,7 +49,9 @@ const tools = [
         price: "유료",
         rating: 4.7,
         tags: ["이미지생성", "AI추론", "창의적", "지능형"],
-        features: ["시각 추론", "의도 이해", "창의성"]
+        features: ["시각 추론", "의도 이해", "창의성"],
+        intent: ["창의적 이미지", "아트", "개념 표현"],
+        useCases: ["예술 작품", "창의적 시각화", "컨셉 아트"]
     },
     {
         id: 5,
@@ -54,7 +62,9 @@ const tools = [
         price: "유료",
         rating: 4.8,
         tags: ["이미지생성", "빠름", "고품질", "효율적"],
-        features: ["빠른 처리", "고품질", "효율성"]
+        features: ["빠른 처리", "고품질", "효율성"],
+        intent: ["빠른 생성", "고품질", "효율적"],
+        useCases: ["빠른 프로토타이핑", "대량 이미지 생성", "빠른 편집"]
     },
     {
         id: 6,
@@ -65,7 +75,9 @@ const tools = [
         price: "유료",
         rating: 4.8,
         tags: ["이미지생성", "창의적", "고품질", "Discord"],
-        features: ["고품질 생성", "창의적 표현", "세부 조정"]
+        features: ["고품질 생성", "창의적 표현", "세부 조정"],
+        intent: ["창의적 이미지", "예술", "디자인"],
+        useCases: ["아트 생성", "컨셉 디자인", "창의적 프로젝트"]
     },
     {
         id: 7,
@@ -76,7 +88,9 @@ const tools = [
         price: "유료",
         rating: 4.8,
         tags: ["이미지생성", "편집", "Adobe", "Photoshop통합"],
-        features: ["Photoshop 통합", "정밀 편집", "빠른 생성"]
+        features: ["Photoshop 통합", "정밀 편집", "빠른 생성"],
+        intent: ["전문적 편집", "이미지 생성", "Photoshop"],
+        useCases: ["Photoshop 편집", "전문적 이미지", "디자인 작업"]
     },
     {
         id: 8,
@@ -100,7 +114,9 @@ const tools = [
         price: "유료",
         rating: 4.9,
         tags: ["비디오생성", "영화같은", "VFX", "고품질"],
-        features: ["영화급 품질", "VFX 프리셋", "제약 없는 생성"]
+        features: ["영화급 품질", "VFX 프리셋", "제약 없는 생성"],
+        intent: ["영화급 비디오", "VFX", "고품질 영상"],
+        useCases: ["영화 트레일러", "광고 영상", "VFX 장면"]
     },
     {
         id: 10,
@@ -111,7 +127,9 @@ const tools = [
         price: "유료",
         rating: 4.8,
         tags: ["비디오생성", "캐릭터일관성", "15초", "고품질"],
-        features: ["15초 비디오", "캐릭터 일관성", "높은 품질"]
+        features: ["15초 비디오", "캐릭터 일관성", "높은 품질"],
+        intent: ["비디오 생성", "캐릭터 영상", "단편 영상"],
+        useCases: ["캐릭터 애니메이션", "짧은 영상", "소셜 콘텐츠"]
     },
     {
         id: 11,
@@ -122,7 +140,9 @@ const tools = [
         price: "유료",
         rating: 4.9,
         tags: ["비디오생성", "현실적", "복잡한", "OpenAI"],
-        features: ["현실적 생성", "복잡한 장면", "높은 품질"]
+        features: ["현실적 생성", "복잡한 장면", "높은 품질"],
+        intent: ["현실적 영상", "복잡한 장면", "고품질 비디오"],
+        useCases: ["현실적인 영상", "복잡한 장면 표현", "전문적 영상"]
     },
     {
         id: 12,
@@ -456,6 +476,8 @@ const tools = [
 let selectedTools = [];
 let currentCategory = "all";
 let searchQuery = "";
+let model = null;
+let modelLoaded = false;
 
 // DOM Elements
 const toolsGrid = document.getElementById("toolsGrid");
@@ -466,6 +488,9 @@ const compareModal = document.getElementById("compareModal");
 const closeCompare = document.getElementById("closeCompare");
 const noResults = document.getElementById("noResults");
 const navButtons = document.querySelectorAll(".nav-btn");
+const loadingIndicator = document.getElementById("loadingIndicator");
+const aiRecommendation = document.getElementById("aiRecommendation");
+const recommendationText = document.getElementById("recommendationText");
 
 // 카테고리 매핑 (한글 표시 이름)
 const categoryLabels = {
@@ -478,16 +503,109 @@ const categoryLabels = {
     tools: "도구"
 };
 
+// Universal Sentence Encoder 모델 로드
+async function loadModel() {
+    try {
+        console.log("🤖 Universal Sentence Encoder 모델 로딩 중...");
+        model = await use.load();
+        modelLoaded = true;
+        console.log("✅ 모델 로드 완료!");
+    } catch (error) {
+        console.error("❌ 모델 로드 실패:", error);
+        modelLoaded = false;
+    }
+}
+
+// 코사인 유사도 계산
+function cosineSimilarity(vecA, vecB) {
+    let dotProduct = 0;
+    let normA = 0;
+    let normB = 0;
+
+    for (let i = 0; i < vecA.length; i++) {
+        dotProduct += vecA[i] * vecB[i];
+        normA += vecA[i] * vecA[i];
+        normB += vecB[i] * vecB[i];
+    }
+
+    return dotProduct / (Math.sqrt(normA) * Math.sqrt(normB));
+}
+
+// 의미 기반 검색 (USE 이용)
+async function semanticSearch(query) {
+    if (!modelLoaded || !model) return {};
+
+    try {
+        loadingIndicator.style.display = "flex";
+        aiRecommendation.style.display = "none";
+
+        // 사용자 쿼리 임베딩
+        const queryEmbedding = await model.embed(query);
+        const queryVector = await queryEmbedding.data();
+
+        const results = {};
+
+        for (let tool of tools) {
+            // 도구의 설명, intent, useCases를 결합해서 임베딩
+            const toolTexts = [
+                tool.description,
+                ...(tool.intent || []),
+                ...(tool.useCases || [])
+            ];
+
+            const toolEmbeddings = await model.embed(toolTexts);
+            const toolVectors = await toolEmbeddings.data();
+
+            // 각 텍스트와의 유사도 계산하고 최고값 가져오기
+            let maxSimilarity = 0;
+            const vectorSize = queryVector.length;
+
+            for (let i = 0; i < toolTexts.length; i++) {
+                const toolVectorStart = i * vectorSize;
+                const toolVector = Array.from(toolVectors.slice(toolVectorStart, toolVectorStart + vectorSize));
+                const similarity = cosineSimilarity(Array.from(queryVector), toolVector);
+                maxSimilarity = Math.max(maxSimilarity, similarity);
+            }
+
+            results[tool.id] = maxSimilarity;
+
+            // 메모리 정리
+            queryEmbedding.dispose();
+            toolEmbeddings.dispose();
+        }
+
+        setTimeout(() => {
+            loadingIndicator.style.display = "none";
+        }, 500);
+
+        return results;
+    } catch (error) {
+        console.error("검색 에러:", error);
+        loadingIndicator.style.display = "none";
+        return {};
+    }
+}
+
 // 초기화
-function init() {
-    renderTools();
+async function init() {
     setupEventListeners();
+    await loadModel();
+    renderTools();
 }
 
 // 이벤트 리스너 설정
 function setupEventListeners() {
     searchInput.addEventListener("input", (e) => {
         searchQuery = e.target.value.toLowerCase();
+
+        // 의미 기반 추천 표시
+        if (searchQuery.length > 5) {
+            recommendationText.textContent = `"${searchQuery}"를 분석중... AI가 최적의 도구를 추천합니다.`;
+            aiRecommendation.style.display = "flex";
+        } else {
+            aiRecommendation.style.display = "none";
+        }
+
         renderTools();
     });
 
@@ -535,14 +653,25 @@ function getSearchMatchScore(tool, query) {
     return score;
 }
 
-// 도구 필터링
-function getFilteredTools() {
+// 도구 필터링 (의미 기반 검색 포함)
+async function getFilteredTools() {
+    let semanticScores = {};
+
+    // 충분히 긴 쿼리면 의미 기반 검색 수행
+    if (searchQuery.length > 5 && modelLoaded) {
+        semanticScores = await semanticSearch(searchQuery);
+    }
+
     return tools.filter((tool) => {
         const categoryMatch =
             currentCategory === "all" || tool.category === currentCategory;
 
-        // 스마트 검색 - 검색어가 없으면 true, 있으면 스코어 > 0
-        const searchMatch = searchQuery === "" || getSearchMatchScore(tool, searchQuery) > 0;
+        // 하이브리드 검색: 키워드 매칭 + 의미 유사도
+        const keywordScore = getSearchMatchScore(tool, searchQuery);
+        const semanticScore = semanticScores[tool.id] || 0;
+        const totalScore = keywordScore * 0.4 + semanticScore * 0.6; // 의미를 더 중시
+
+        const searchMatch = searchQuery === "" || totalScore > 0.1;
 
         const isFreeChecked = freeFilter.checked;
         const isPaidChecked = paidFilter.checked;
@@ -556,19 +685,19 @@ function getFilteredTools() {
 
         return categoryMatch && searchMatch && priceMatch;
     }).sort((a, b) => {
-        // 검색 결과 정렬 - 스코어가 높은 것부터
+        // 검색 결과 정렬
         if (searchQuery) {
-            const scoreA = getSearchMatchScore(a, searchQuery);
-            const scoreB = getSearchMatchScore(b, searchQuery);
+            const scoreA = getSearchMatchScore(a, searchQuery) + (semanticScores[a.id] || 0);
+            const scoreB = getSearchMatchScore(b, searchQuery) + (semanticScores[b.id] || 0);
             return scoreB - scoreA;
         }
         return 0;
     });
 }
 
-// 도구 렌더링
-function renderTools() {
-    const filtered = getFilteredTools();
+// 도구 렌더링 (비동기)
+async function renderTools() {
+    const filtered = await getFilteredTools();
     toolsGrid.innerHTML = "";
 
     if (filtered.length === 0) {
@@ -698,6 +827,29 @@ function showCompare() {
     compareTable.innerHTML = html;
     compareModal.classList.add("active");
 }
+
+// 도구 메타데이터 초기화 (intent/useCases가 없는 도구에 기본값 할당)
+function initializeToolMetadata() {
+    tools.forEach(tool => {
+        if (!tool.intent) {
+            // 카테고리와 태그로부터 기본 intent 생성
+            tool.intent = [
+                tool.category,
+                ...tool.tags.slice(0, 3)
+            ];
+        }
+        if (!tool.useCases) {
+            // 설명과 기능으로부터 기본 useCases 생성
+            tool.useCases = [
+                tool.description.substring(0, 50) + "...",
+                ...tool.features.slice(0, 2)
+            ];
+        }
+    });
+}
+
+// 메타데이터 초기화
+initializeToolMetadata();
 
 // 앱 시작
 init();
