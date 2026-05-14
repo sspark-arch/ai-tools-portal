@@ -507,9 +507,22 @@ const categoryLabels = {
 async function loadModel() {
     try {
         console.log("🤖 Universal Sentence Encoder 모델 로딩 중...");
+
+        // 모델이 전역 use 객체로 존재하는지 확인
+        if (typeof use === 'undefined') {
+            console.warn("⚠️ TensorFlow.js USE 라이브러리가 로드되지 않았습니다");
+            modelLoaded = false;
+            return;
+        }
+
         model = await use.load();
         modelLoaded = true;
         console.log("✅ 모델 로드 완료!");
+
+        // 모델 로드 완료 UI 업데이트
+        if (document.getElementById("loadingIndicator")) {
+            document.getElementById("loadingIndicator").style.display = "none";
+        }
     } catch (error) {
         console.error("❌ 모델 로드 실패:", error);
         modelLoaded = false;
@@ -533,54 +546,49 @@ function cosineSimilarity(vecA, vecB) {
 
 // 의미 기반 검색 (USE 이용)
 async function semanticSearch(query) {
-    if (!modelLoaded || !model) return {};
+    if (!modelLoaded || !model) {
+        console.log("⚠️ 모델이 아직 로드되지 않았습니다");
+        return {};
+    }
 
     try {
-        loadingIndicator.style.display = "flex";
-        aiRecommendation.style.display = "none";
+        console.log("🔍 의미 검색 시작:", query);
 
         // 사용자 쿼리 임베딩
-        const queryEmbedding = await model.embed(query);
-        const queryVector = await queryEmbedding.data();
+        const queryEmbeddings = await model.embed([query]);
+        const queryData = await queryEmbeddings.data();
+        const queryVector = Array.from(queryData);
+        queryEmbeddings.dispose();
 
         const results = {};
+        const vectorSize = queryVector.length;
 
+        // 모든 도구에 대해 유사도 계산
         for (let tool of tools) {
-            // 도구의 설명, intent, useCases를 결합해서 임베딩
-            const toolTexts = [
-                tool.description,
-                ...(tool.intent || []),
-                ...(tool.useCases || [])
-            ];
+            try {
+                // 도구의 설명만 사용 (더 간단하고 빠름)
+                const toolTexts = [tool.description];
 
-            const toolEmbeddings = await model.embed(toolTexts);
-            const toolVectors = await toolEmbeddings.data();
+                const toolEmbeddings = await model.embed(toolTexts);
+                const toolData = await toolEmbeddings.data();
+                const toolVector = Array.from(toolData);
+                toolEmbeddings.dispose();
 
-            // 각 텍스트와의 유사도 계산하고 최고값 가져오기
-            let maxSimilarity = 0;
-            const vectorSize = queryVector.length;
+                // 유사도 계산
+                const similarity = cosineSimilarity(queryVector, toolVector);
+                results[tool.id] = similarity;
 
-            for (let i = 0; i < toolTexts.length; i++) {
-                const toolVectorStart = i * vectorSize;
-                const toolVector = Array.from(toolVectors.slice(toolVectorStart, toolVectorStart + vectorSize));
-                const similarity = cosineSimilarity(Array.from(queryVector), toolVector);
-                maxSimilarity = Math.max(maxSimilarity, similarity);
+                console.log(`${tool.name}: ${similarity.toFixed(3)}`);
+            } catch (e) {
+                console.error(`${tool.name} 처리 에러:`, e);
+                results[tool.id] = 0;
             }
-
-            results[tool.id] = maxSimilarity;
-
-            // 메모리 정리
-            queryEmbedding.dispose();
-            toolEmbeddings.dispose();
         }
 
-        setTimeout(() => {
-            loadingIndicator.style.display = "none";
-        }, 500);
-
+        loadingIndicator.style.display = "none";
         return results;
     } catch (error) {
-        console.error("검색 에러:", error);
+        console.error("❌ 검색 에러:", error);
         loadingIndicator.style.display = "none";
         return {};
     }
@@ -588,36 +596,55 @@ async function semanticSearch(query) {
 
 // 초기화
 async function init() {
+    console.log("🚀 포털 초기화 시작...");
+
+    // 1. 이벤트 리스너 먼저 설정
     setupEventListeners();
-    await loadModel();
-    renderTools();
+
+    // 2. 메타데이터 초기화
+    initializeToolMetadata();
+
+    // 3. 도구 렌더링 (비동기)
+    await renderTools();
+
+    // 4. 모델 로드 (백그라운드에서, 시간이 걸릴 수 있음)
+    console.log("📦 AI 모델 로드 중 (백그라운드)...");
+    loadModel().then(() => {
+        console.log("✅ 의미 기반 검색 준비 완료!");
+    });
 }
 
 // 이벤트 리스너 설정
 function setupEventListeners() {
-    searchInput.addEventListener("input", (e) => {
+    searchInput.addEventListener("input", async (e) => {
         searchQuery = e.target.value.toLowerCase();
 
         // 의미 기반 추천 표시
         if (searchQuery.length > 5) {
             recommendationText.textContent = `"${searchQuery}"를 분석중... AI가 최적의 도구를 추천합니다.`;
             aiRecommendation.style.display = "flex";
+            loadingIndicator.style.display = "flex";
         } else {
             aiRecommendation.style.display = "none";
+            loadingIndicator.style.display = "none";
         }
 
-        renderTools();
+        await renderTools();
     });
 
-    freeFilter.addEventListener("change", renderTools);
-    paidFilter.addEventListener("change", renderTools);
+    freeFilter.addEventListener("change", async () => {
+        await renderTools();
+    });
+    paidFilter.addEventListener("change", async () => {
+        await renderTools();
+    });
 
     navButtons.forEach((btn) => {
-        btn.addEventListener("click", (e) => {
+        btn.addEventListener("click", async (e) => {
             navButtons.forEach((b) => b.classList.remove("active"));
             e.target.classList.add("active");
             currentCategory = e.target.dataset.category;
-            renderTools();
+            await renderTools();
         });
     });
 
@@ -657,9 +684,14 @@ function getSearchMatchScore(tool, query) {
 async function getFilteredTools() {
     let semanticScores = {};
 
-    // 충분히 긴 쿼리면 의미 기반 검색 수행
-    if (searchQuery.length > 5 && modelLoaded) {
-        semanticScores = await semanticSearch(searchQuery);
+    // 충분히 긴 쿼리면 의미 기반 검색 수행 (모델이 로드되었을 경우)
+    if (searchQuery.length > 5 && modelLoaded && model) {
+        try {
+            semanticScores = await semanticSearch(searchQuery);
+        } catch (error) {
+            console.error("의미 검색 실패, 키워드 검색으로 대체:", error);
+            semanticScores = {};
+        }
     }
 
     return tools.filter((tool) => {
@@ -668,10 +700,14 @@ async function getFilteredTools() {
 
         // 하이브리드 검색: 키워드 매칭 + 의미 유사도
         const keywordScore = getSearchMatchScore(tool, searchQuery);
-        const semanticScore = semanticScores[tool.id] || 0;
-        const totalScore = keywordScore * 0.4 + semanticScore * 0.6; // 의미를 더 중시
+        const semanticScore = (semanticScores[tool.id] || 0) * 100; // 정규화
 
-        const searchMatch = searchQuery === "" || totalScore > 0.1;
+        // 의미 검색 결과가 있으면 사용, 없으면 키워드만 사용
+        const totalScore = modelLoaded && Object.keys(semanticScores).length > 0
+            ? keywordScore * 0.4 + semanticScore * 0.6
+            : keywordScore;
+
+        const searchMatch = searchQuery === "" || totalScore > 0.05;
 
         const isFreeChecked = freeFilter.checked;
         const isPaidChecked = paidFilter.checked;
@@ -687,8 +723,8 @@ async function getFilteredTools() {
     }).sort((a, b) => {
         // 검색 결과 정렬
         if (searchQuery) {
-            const scoreA = getSearchMatchScore(a, searchQuery) + (semanticScores[a.id] || 0);
-            const scoreB = getSearchMatchScore(b, searchQuery) + (semanticScores[b.id] || 0);
+            const scoreA = getSearchMatchScore(a, searchQuery) + ((semanticScores[a.id] || 0) * 100);
+            const scoreB = getSearchMatchScore(b, searchQuery) + ((semanticScores[b.id] || 0) * 100);
             return scoreB - scoreA;
         }
         return 0;
